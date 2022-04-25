@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Easy Server</title>
+</head>
+<body>
+<ul>
+{% for entry in entry_list %}
+{% if entry.is_dir %}
+<li><a href="./{{ entry.name }}/">{{ entry.name }}/</a></li>
+{% else %}
+<li><a href="./{{ entry.name }}">{{ entry.name }}</a></li>
+{% endif %}
+{% endfor %}
+</ul>
+</body>
+</html>

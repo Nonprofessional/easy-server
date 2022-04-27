@@ -1,16 +1,19 @@
 [package]
 edition = "2021"
 name = "easy-server"
-version = "0.1.0"
 repository = "https://github.com/Nonprofessional/easy-server"
+version = "0.1.0"
 
 [dependencies]
-askama = "0.10"
-axum = {version = "0.5", features = ["multipart"]}
+askama = {version = "0.10"}
+axum = {version = "0.5"}
 clap = {version = "3", features = ["derive"]}
 tokio = {version = "1", features = ["full"]}
-tower-http = { version = "0.2", features = ["full"] }
-tower = {version="0.4", features = ["full"] }
-hyper = {version="0.14",features=["full"]}
-http = "0.2"
-http-body = "0.4"
+tower-http = {version = "0.2", features = ["fs", "add-extension"]}
+
+[profile.release]
+strip = true
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"

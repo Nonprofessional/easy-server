@@ -52,12 +52,14 @@ async fn main() {
     let app = Router::new()
         .nest(
             "",
-            get_service(ServeDir::new(root_path)).handle_error(|error: std::io::Error| async move {
-                (
-                    StatusCode::INTERNAL_SERVER_ERROR,
-                    format!("Service Error: {}", error),
-                )
-            }),
+            get_service(ServeDir::new(root_path)).handle_error(
+                |error: std::io::Error| async move {
+                    (
+                        StatusCode::INTERNAL_SERVER_ERROR,
+                        format!("Service Error: {}", error),
+                    )
+                },
+            ),
         )
         .layer(middleware::from_fn(dir_handler))
         .layer(AddExtensionLayer::new(Arc::new(config)));
@@ -87,21 +89,20 @@ async fn dir_handler(
 ) -> Result<impl IntoResponse, (StatusCode, String)> {
     let mut work_path = match req.extensions().get::<Arc<ServerConfig>>() {
         Some(config) => config.work_path.to_owned(),
-        None => {
-            return Err((
-                StatusCode::INTERNAL_SERVER_ERROR,
-                "Path Error".to_string(),
-            ))
-        }
+        None => return Err((StatusCode::INTERNAL_SERVER_ERROR, "Path Error".to_string())),
     };
-    let uri = req.uri().clone().to_string();
+    let uri = req.uri().clone();
+    println!("{:?}", uri);
 
     let res = next.run(req).await;
     if res.status() != StatusCode::NOT_FOUND {
         return Ok(res);
     };
 
-    work_path.push(uri.trim_start_matches('/'));
+    let uri = uri.to_string().trim_start_matches('/').to_owned();
+    let decoded_uri = percent_encoding::percent_decode_str(&uri).decode_utf8_lossy();
+    work_path.push(&*decoded_uri);
+    println!("{:?}", work_path);
     if work_path.is_dir() {
         if let Ok(entry_list) = list_entry(&work_path).await {
             let entry_list = IndexTemplate { entry_list };

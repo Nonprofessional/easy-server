@@ -1,6 +1,6 @@
 # Easy Server
 
-`easy-server` mainly acts as a static file server.
+`easy-server` mainly acts as a static file server as you can see in the following screenshot.
 
 ## Screenshot
 
@@ -8,9 +8,9 @@
 
 ## Usage
 
-```YAML
+```
 easy-server 
-Just a easy sever.
+Just an easy sever.
 
 USAGE:
     easy-server [OPTIONS]

@@ -3,7 +3,7 @@
 use clap::Parser;
 
 #[derive(Parser)]
-#[clap(about = "Just a easy sever.")]
+#[clap(about = "Just an easy sever.")]
 struct Args {
     /// Set the working root directory
     #[clap(short = 'd', long = "directory", default_value = ".")]

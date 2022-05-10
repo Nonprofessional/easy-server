@@ -2,7 +2,7 @@
 edition = "2021"
 name = "easy-server"
 repository = "https://github.com/Nonprofessional/easy-server"
-version = "0.2.0"
+version = "0.2.1"
 
 [dependencies]
 askama = {version = "0.10"}
